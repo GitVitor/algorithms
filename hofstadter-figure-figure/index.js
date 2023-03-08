@@ -70,16 +70,6 @@ function hof(n) {
 
 console.time("time");
 
-// assert.equal(hof(2), 7);
-
-// assert.equal(hof(3), 12);
-
-// assert.equal(hof(7), 45);
-
-// assert.equal(hof(8), 56);
-
-// assert.equal(hof(100), 5876);
-
-assert.equal(hof(2000), 2077847);
+assert.equal(hof(5727), 16780505);
 
 console.timeEnd("time");
