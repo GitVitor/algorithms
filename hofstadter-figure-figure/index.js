@@ -7,13 +7,6 @@ class MySet extends Set {
   }
 }
 
-function removeIntersectionFromS(F, S) {
-  for (const item of F) {
-    S.delete(item);
-  }
-  return S;
-}
-
 function* findByIndex(indexToFind, list) {
   let i = 0;
 
@@ -33,28 +26,30 @@ function calculateS(F, S) {
   let difference = valueToFound - lastValue;
 
   while (difference > 0) {
-    S.add(lastValue + 1);
-    lastValue = lastValue + 1;
-    difference = difference - 1;
+    if (!F.has(lastValue + 1)) {
+      S.add(lastValue + 1);
+    }
+    lastValue++;
+    difference--;
   }
 
   return S;
 }
 
-function calculateF(F, S, n) {
-  if (F.size >= n) {
+function* calculateF(F, S, n) {
+  if (F.size == n) {
     const val = findByIndex(n - 1, S).next().value;
-    F.add(F.last + val);
-    return F;
+    const newF = new MySet(F); // Preciso testar um WeakSet aqui;
+    newF.add(F.last + val);
+    return newF;
   }
 
-  let i = n - 1;
   while (F.size <= n) {
-    F = calculateF(F, S, i);
-    const intermediateValue = calculateS(F, S);
-
-    S = removeIntersectionFromS(F, intermediateValue);
-    i = i + 1;
+    const iterator = calculateF(F, S, F.size);
+    const nextData = iterator.next();
+    F = nextData.value;
+    yield F;
+    S = calculateS(F, S);
   }
 
   return F;
@@ -62,7 +57,15 @@ function calculateF(F, S, n) {
 
 function hof(n) {
   if (1 < n + 1) {
-    return [...calculateF(new MySet([1]), new MySet([2]), n).values()][n];
+    const FSet = new MySet([1]);
+    const SSet = new MySet([2]);
+
+    let iterator = calculateF(FSet, SSet, n);
+    let res = { done: false };
+    while (!res.done) {
+      res = iterator.next();
+    }
+    return [...res.value.values()][n];
   }
 
   return 1;
@@ -70,6 +73,13 @@ function hof(n) {
 
 console.time("time");
 
+// assert.equal(hof(1), 3);
+// assert.equal(hof(2), 7);
+// assert.equal(hof(3), 12);
+// assert.equal(hof(11), 98);
+
+// assert.equal(hof(5727), 16780505);
 assert.equal(hof(5727), 16780505);
+// assert.equal(hof(5728), 16780505);
 
 console.timeEnd("time");
