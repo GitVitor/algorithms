@@ -7,13 +7,6 @@ class MySet extends Set {
   }
 }
 
-function removeIntersectionFromS(F, S) {
-  for (const item of F) {
-    S.delete(item);
-  }
-  return S;
-}
-
 function* findByIndex(indexToFind, list) {
   let i = 0;
 
@@ -26,35 +19,41 @@ function* findByIndex(indexToFind, list) {
   }
 }
 
-function calculateS(F, S) {
+function* calculateS(F, S) {
   const valueToFound = F.last + 1;
 
   let lastValue = S.last;
   let difference = valueToFound - lastValue;
 
   while (difference > 0) {
-    S.add(lastValue + 1);
-    lastValue = lastValue + 1;
-    difference = difference - 1;
+    if (!F.has(lastValue + 1)) {
+      S.add(lastValue + 1);
+      yield S;
+    }
+    lastValue++;
+    difference--;
   }
 
   return S;
 }
 
-function calculateF(F, S, n) {
-  if (F.size >= n) {
+function* calculateF(F, S, n) {
+  if (F.size == n) {
     const val = findByIndex(n - 1, S).next().value;
-    F.add(F.last + val);
-    return F;
+    const newF = new MySet(F); // Preciso testar um WeakSet aqui;
+    newF.add(F.last + val);
+    return newF;
   }
 
-  let i = n - 1;
   while (F.size <= n) {
-    F = calculateF(F, S, i);
-    const intermediateValue = calculateS(F, S);
+    const FIterator = calculateF(F, S, F.size);
 
-    S = removeIntersectionFromS(F, intermediateValue);
-    i = i + 1;
+    let nextData = FIterator.next();
+    F = nextData.value;
+    yield F;
+    const SIterator = calculateS(F, S);
+    nextData = SIterator.next();
+    S = nextData.value;
   }
 
   return F;
@@ -62,7 +61,15 @@ function calculateF(F, S, n) {
 
 function hof(n) {
   if (1 < n + 1) {
-    return [...calculateF(new MySet([1]), new MySet([2]), n).values()][n];
+    const FSet = new MySet([1]);
+    const SSet = new MySet([2]);
+
+    let iterator = calculateF(FSet, SSet, n);
+    let res = { done: false };
+    while (!res.done) {
+      res = iterator.next();
+    }
+    return [...res.value.values()][n];
   }
 
   return 1;
@@ -70,16 +77,6 @@ function hof(n) {
 
 console.time("time");
 
-// assert.equal(hof(2), 7);
-
-// assert.equal(hof(3), 12);
-
-// assert.equal(hof(7), 45);
-
-// assert.equal(hof(8), 56);
-
-// assert.equal(hof(100), 5876);
-
-assert.equal(hof(2000), 2077847);
+assert.equal(hof(15000), 114132636);
 
 console.timeEnd("time");
