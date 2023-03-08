@@ -2,21 +2,6 @@
 
 Cada pasta tem um problema e um algoritmo que tende a resolver o problema.
 
-## Propose to V2
-
-Nessa v2 eu pretendo melhorar esse algoritmo para que ele suporte um número maior de iterações. Atualmente o algoritmo consegue encontrar itens apenas até a posição 5.727 em um tempo de 5199 ms (~5 segundos).
-A ideia dessa melhoria de performance não é que nós consigamos executar o algoritmo em um menor tempo, e sim que nós consigamos encontrar itens em posições superiores a 5.727.
-
-Ou seja, se executarmos hof 10000, o algoritmo deve ser capaz de encontrar um resposta.
-
-### Qual o problema atual do algoritmo?
-
-Atualmente o Algoritmo implementa uma lógica que se apoia em cima de programação recursiva.
-
-Apesar da programação recursiva ser uma ferramenta poderosa e elegante para resolver problemas, ela possuí algumas limitações. Não podemos colocar uma função com chamada recursiva para ficar se chamando "infinitamente" e tão pouco para se chamar um número muito alto de vezes.
-
-Justamente essa limitação acaba impactando na capacidade de execução do nosso algoritmo.
-
 ## hofstadter-figure-figure
 
 A sequência figure-figure de Hofstadter é uma família de sequências inteiras definidas por relações de recorrência não lineares. Uma forma de definir a sequência é:

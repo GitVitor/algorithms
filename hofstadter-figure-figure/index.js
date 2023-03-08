@@ -19,7 +19,7 @@ function* findByIndex(indexToFind, list) {
   }
 }
 
-function calculateS(F, S) {
+function* calculateS(F, S) {
   const valueToFound = F.last + 1;
 
   let lastValue = S.last;
@@ -28,6 +28,7 @@ function calculateS(F, S) {
   while (difference > 0) {
     if (!F.has(lastValue + 1)) {
       S.add(lastValue + 1);
+      yield S;
     }
     lastValue++;
     difference--;
@@ -45,11 +46,14 @@ function* calculateF(F, S, n) {
   }
 
   while (F.size <= n) {
-    const iterator = calculateF(F, S, F.size);
-    const nextData = iterator.next();
+    const FIterator = calculateF(F, S, F.size);
+
+    let nextData = FIterator.next();
     F = nextData.value;
     yield F;
-    S = calculateS(F, S);
+    const SIterator = calculateS(F, S);
+    nextData = SIterator.next();
+    S = nextData.value;
   }
 
   return F;
@@ -73,13 +77,6 @@ function hof(n) {
 
 console.time("time");
 
-// assert.equal(hof(1), 3);
-// assert.equal(hof(2), 7);
-// assert.equal(hof(3), 12);
-// assert.equal(hof(11), 98);
-
-// assert.equal(hof(5727), 16780505);
-assert.equal(hof(5727), 16780505);
-// assert.equal(hof(5728), 16780505);
+assert.equal(hof(15000), 114132636);
 
 console.timeEnd("time");
