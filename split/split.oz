@@ -15,11 +15,3 @@ define
       end
    end
 end
-
-local
-   Xs
-   Ys
-in
-   Xs = [ 1 2 ]
-   { Browse Xs }
-end
