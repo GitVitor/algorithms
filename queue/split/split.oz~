@@ -1,0 +1,24 @@
+declare SplitModule in
+local
+   proc {Split Xs ?Ys ?Zs}
+      {Show 'here !!'}
+      case Xs
+      of nil then Ys = nil Zs = nil
+      [] [X] then
+	 Ys = [X]
+	 Zs = nil
+      [] X1|X2|Xr then Yr Zr in
+	 Ys = X1|Yr
+	 Zs = X2|Zr
+	 {Split Xr Yr Zr}
+      end
+   end
+   Ys
+   Zs
+in
+   SplitModule = 'export'(
+		    split: Split
+		    )
+   {SplitModule.split [1 2] Ys Zs}
+   {Browse Zs}
+end
