@@ -1,55 +1,54 @@
-# Estrutura de dados e algoritmos
+# Data Structures and Algorithms
 
-Cada pasta tem um problema e um algoritmo que tende a resolver o problema.
+Each folder contains a problem and an algorithm aimed at solving the problem.
 
 ## hofstadter-figure-figure
 
-*Linguagem utilizada:* Javascript
+*Language used:* Javascript
 
-A sequência figure-figure de Hofstadter é uma família de sequências inteiras definidas por relações de recorrência não lineares. Uma forma de definir a sequência é:
+Hofstadter's figure-figure sequence is a family of integer sequences defined by nonlinear recurrence relations. One way to define the sequence is:
 
 F(1) = 1; S(1) = 2; F(n) = F(n-1) + S(n-1), n > 1;
 
-S(n) é o valor que não está em F(n).
+S(n) is the value that is not in F(n).
 
-Por exemplo, F(2) = F(1) + S(1) = 3 e S(2) é o próximo inteiro que não está em R, ou seja, 4. A sequência R é chamada de “figura” e a sequência S é chamada de "figura complementar".
+For example, F(2) = F(1) + S(1) = 3, and S(2) is the next integer not in R, which is 4. The sequence R is called "figure," and the sequence S is called "complementary figure."
 
-### O que o meu algoritmo faz?
+### What does my algorithm do?
 
-Criei um algoritmo em Javascript que de forma performatica ajuda a encontrar a posição de um item na sequência F.
-Por exemplo: 
+I created a Javascript algorithm that efficiently helps find the position of an item in sequence F.
+For example:
 ```
 hof 0 = 1
 hof 1 = 3
 hof 2 = 7
 ```
 
-Alguns pontos interessantes sobre esse algoritmo:
-- Utilizei técnicas de programação recursiva para resolver o problema;
-- Como o número de itens dentro das listas crescem muito a cada iteração, rapidamente o algoritmo começa a perder performance para conseguir encontrar valores dentro dessas listas. Sendo assim foi necesário utilizar o [Set](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Set) do Javascript para obter uma melhor performance.
-- TLDR; Teoria por trás do generators do Javascript: Utilizando o Generator do Javascript eu consegui replicar o conceito de Lazy Evaluation presente em linguagens funcionais como Haskell. Ao utilizar Generators, foi possível criar sequências que não são avaliadas até que sejam necessárias, evitando processamento desnecessário e melhorando o desempenho do programa. Em Haskell, essa estratégia é chamada de "avaliação preguiçosa" e pode ser aplicada em diversos contextos, como na geração de listas infinitas. Com o uso de Generators em Javascript, é possível obter um comportamento semelhante, permitindo a criação de sequências que são geradas sob demanda e consumidas de forma eficiente. Isso torna a implementação de algoritmos mais flexível e eficiente, uma vez que é possível economizar recursos computacionais ao evitar o processamento de elementos que não serão utilizados.
+Some interesting points about this algorithm:
+- I used recursive programming techniques to solve the problem;
+- As the number of items within the lists grows significantly with each iteration, the algorithm quickly starts to lose performance in finding values within these lists. Therefore, it was necessary to use Javascript's [Set](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Set) to achieve better performance.
+- TLDR; Theory behind Javascript generators: By using Javascript's Generator, I replicated the concept of Lazy Evaluation present in functional languages like Haskell. Using Generators, it was possible to create sequences that are not evaluated until they are needed, avoiding unnecessary processing and improving program performance. In Haskell, this strategy is called "lazy evaluation" and can be applied in various contexts, such as generating infinite lists. With the use of Generators in Javascript, it is possible to achieve a similar behavior, allowing the creation of sequences that are generated on demand and consumed efficiently. This makes algorithm implementation more flexible and efficient, as it is possible to save computational resources by avoiding the processing of elements that will not be used.
 
 
 ## Split
 
-**Linguagem utilizada: [Oz language](http://mozart2.org/mozart-v1/doc-1.4.0/tutorial/index.html)**
+**Language used: [Oz language](http://mozart2.org/mozart-v1/doc-1.4.0/tutorial/index.html)**
 
-O objetivo da função Split é dividir a lista de entrada Xs em duas listas de saída Ys e Zs, alternando os elementos entre as duas listas. Por exemplo, se a lista de entrada for [1 2 3 4], então a função deve retornar as listas [1 3] e [2 4].
+The goal of the Split function is to divide the input list Xs into two output lists Ys and Zs, alternating the elements between the two lists. For example, if the input list is [1 2 3 4], then the function should return the lists [1 3] and [2 4].
 
-A função usa recursão para dividir a lista de entrada. Ela verifica primeiro se a lista está vazia ou contém apenas um elemento. Se for o caso, ela atribui os valores apropriados às variáveis de saída e retorna. Caso contrário, ela divide a lista em três partes: o primeiro elemento (X1), o segundo elemento (X2) e o restante da lista (Xr**. Em seguida, ela chama recursivamente a si mesma com o restante da lista como entrada e atribui os resultados às variáveis de saída.
+The function uses recursion to divide the input list. It first checks if the list is empty or contains only one element. If so, it assigns the appropriate values to the output variables and returns. Otherwise, it divides the list into three parts: the first element (X1), the second element (X2), and the rest of the list (Xr). Then, it recursively calls itself with the remaining list as input and assigns the results to the output variables.
 
-No geral, este algoritmo divide eficientemente uma lista em duas partes alternando seus elementos.
+Overall, this algorithm efficiently divides a list into two parts by alternating its elements.
 
 ## AppendD
 
-**Linguagem utilizada: [Oz language](http://mozart2.org/mozart-v1/doc-1.4.0/tutorial/index.html)**
+**Language used: [Oz language](http://mozart2.org/mozart-v1/doc-1.4.0/tutorial/index.html)**
 
-O objetivo desse algoritmo é implementar uma forma performatica de incrementar uma lista com uma outra lista.
-Quando eu digo performatica, estou me referindo ao fato de que geralmente uma lista para ser incrementada por outra pode levar um tempo O(n), com esse algoritmo AppendD o tempo é constante O(1).
+The goal of this algorithm is to implement an efficient way to append one list with another list.
+When I say efficient, I am referring to the fact that usually appending one list with another can take O(n) time, but with this AppendD algorithm, the time is constant O(1).
 
-Para conseguir um tempo O(1) nesse algoritmo, foi necessário utilizar um técnica de Difference Structure. Nessa técnica, nós temos duas estruturas:
-- Head - Uma estrutura que está preenchida (ou não);
-- Tail - Uma outra estrutura que não está preenchida.
+To achieve O(1) time in this algorithm, it was necessary to use a technique called Difference Structure. In this technique, we have two structures:
+- Head - A structure that is filled (or not);
+- Tail - Another structure that is not filled.
 
-A ideia dessa técnica de difference structure, é que possamos criar novas estruturas combinando com outras estruturas já existentes.
-
+The idea behind this difference structure technique is that we can create new structures by combining them with existing structures.
